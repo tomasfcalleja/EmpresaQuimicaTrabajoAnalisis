@@ -1,0 +1,80 @@
+{% extends 'layoutDashboard.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Panel de Administración</h2>
+        <div class="row">
+            <!-- Gestionar Usuarios -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-users fa-3x mb-3" style="color:#007BFF;"></i>
+                            <h5 class="card-title">Gestionar Usuarios</h5>
+                            <p class="card-text">Administrar la lista de usuarios.</p>
+                        </div>
+                        <a href="{{ url_for('dashboard.dashboardverusuarios') }}" class="btn btn-primary mt-auto">Ver Usuarios</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestionar Pedidos -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-box fa-3x mb-3" style="color:#007BFF;"></i>
+                            <h5 class="card-title">Gestionar Pedidos</h5>
+                            <p class="card-text">Controlar y ver los pedidos realizados.</p>
+                        </div>
+                        <a href="{{ url_for('dashboard.dashboardverpedidos') }}" class="btn btn-primary mt-auto">Ver Pedidos</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestionar Clientes -->
+            <!-- <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-user-tie fa-3x mb-3" style="color:#007BFF;"></i>
+                            <h5 class="card-title">Gestionar Clientes</h5>
+                            <p class="card-text">Ver y editar la lista de clientes.</p>
+                        </div>
+                        <a href="{{ url_for('dashboard.dashboardverclientes') }}" class="btn btn-primary mt-auto">Ver Clientes</a>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Gestionar Ventas -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-chart-line fa-3x mb-3" style="color:#007BFF;"></i>
+                            <h5 class="card-title">Gestionar Ventas</h5>
+                            <p class="card-text">Monitorear las ventas realizadas.</p>
+                        </div>
+                        <a href="{{ url_for('dashboard.dashboardverventas') }}" class="btn btn-primary mt-auto">Ver Ventas</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestionar Productos -->
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                        <div>
+                            <i class="fas fa-cubes fa-3x mb-3" style="color:#007BFF;"></i>
+                            <h5 class="card-title">Gestionar Productos</h5>
+                            <p class="card-text">Administrar la lista de productos.</p>
+                        </div>
+                        <a href="{{ url_for('dashboard.dashboardverproductos') }}" class="btn btn-primary mt-auto">Ver Productos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
