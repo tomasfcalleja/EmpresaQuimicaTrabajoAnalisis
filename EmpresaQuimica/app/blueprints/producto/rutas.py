@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.services.productos_service import ProductoService  # Importar el servicio de productos
-import json
+from app.services.productos_service import ProductoService  
 
 producto_bp = Blueprint('producto', __name__)
 
@@ -12,16 +11,16 @@ def agregar_producto():
         descripcion = request.form['descripcion']
         nivel = request.form['nivel']
         stock = request.form['stock']
-        imagen = request.form.get('imagen', '')  # Puedes manejar la carga de imágenes más adelante
-
+        imagen = request.form.get('imagen', '')  
+        
         productos = ProductoService.obtener_productos()  
         nuevo_producto = {
-            "id": str(len(productos) + 1),  # Asignar un nuevo ID
+            "id": str(len(productos) + 1),  
             "nombre": nombre,
-            "precio": float(precio),  # Asegúrate de convertir el precio a float
+            "precio": float(precio),  
             "descripcion": descripcion,
-            "nivel": int(nivel),  # Convertir nivel a entero
-            "stock": int(stock),  # Convertir stock a entero
+            "nivel": int(nivel),  
+            "stock": int(stock), 
             "imagen": imagen
         }
 
@@ -39,17 +38,15 @@ def agregar_producto():
 
 @producto_bp.route('/editar_producto/<id_producto>', methods=['GET', 'POST'])
 def editar_producto(id_producto):
-    producto_a_editar = ProductoService.obtener_producto_por_id(id_producto)  # Obtiene el producto por ID
-
+    producto_a_editar = ProductoService.obtener_producto_por_id(id_producto)  
     if request.method == 'POST':
         nombre = request.form['nombre']
         precio = request.form['precio']
         descripcion = request.form['descripcion']
         nivel = request.form['nivel']
         stock = request.form['stock']
-        imagen = request.form.get('imagen', '')  # Puedes manejar la carga de imágenes más adelante
+        imagen = request.form.get('imagen', '')  
 
-        # Crear un diccionario para el producto actualizado
         producto_actualizado = {
             "id": id_producto,
             "nombre": nombre,
@@ -61,7 +58,7 @@ def editar_producto(id_producto):
         }
 
         try:
-            if ProductoService.actualizar_producto(producto_actualizado):  # Método para actualizar producto
+            if ProductoService.actualizar_producto(producto_actualizado): 
                 flash("Producto actualizado exitosamente.", "success")
                 return redirect(url_for('producto.ver_productos')) 
             else:

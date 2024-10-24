@@ -25,13 +25,8 @@
                 <td>{{ venta.id }}</td>
                 <td>{{ venta.idUsuario }}</td>
                 <td>
-                    <!-- Botón para ver los detalles de la venta -->
                     <!-- <a href="{{ url_for('venta.detalles_venta', id_venta=venta.id) }}" class="btn btn-sm btn-info">Ver detalles</a> -->
-                    
-                    <!-- Botón para editar la venta -->
                     <a href="{{ url_for('venta.editar_venta', id_venta=venta.id) }}" class="btn btn-sm btn-warning">Editar</a>
-
-                    <!-- Formulario para eliminar la venta -->
                     <form action="{{ url_for('venta.eliminar_venta', id_venta=venta.id) }}" method="POST" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</button>
                     </form>

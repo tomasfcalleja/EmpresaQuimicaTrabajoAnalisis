@@ -37,7 +37,7 @@ def agregar_usuario():
 
 @usuario_bp.route('/editar_usuario/<id_usuario>', methods=['GET', 'POST'])
 def editar_usuario(id_usuario):
-    usuario_a_editar = UsuarioService.obtener_usuario_por_id(id_usuario)  # Obtiene el usuario por ID
+    usuario_a_editar = UsuarioService.obtener_usuario_por_id(id_usuario) 
 
     if request.method == 'POST':
         usuario = request.form['usuario']
