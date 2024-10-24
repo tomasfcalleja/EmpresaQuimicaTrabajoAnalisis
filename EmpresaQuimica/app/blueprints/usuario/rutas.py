@@ -82,4 +82,4 @@ def eliminar_usuario(id_usuario):
 @usuario_bp.route('/ver_usuarios', methods=['GET'])
 def ver_usuarios():
     usuarios = UsuarioService.obtener_usuarios()  
-    return render_template('user/ver_usuarios.html', usuarios=usuarios)
+    return render_template('usuario/ver_usuarios.html', usuarios=usuarios)
