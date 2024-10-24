@@ -25,7 +25,7 @@ def dashboardverpedidos():
 @dashboard_bp.route('/ver_ventas')
 def dashboardverventas():
     usuarios = "Ghami"
-    return render_template('venta/ver_ventas.html', usuarios=usuarios)
+    return render_template('venta/ver_ventas.html')
 
 @dashboard_bp.route('/ver_productos')
 def dashboardverproductos():

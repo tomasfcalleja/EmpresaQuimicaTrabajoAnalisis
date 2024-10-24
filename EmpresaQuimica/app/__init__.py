@@ -2,6 +2,7 @@ from flask import Flask
 from app.blueprints.autenticacion.rutas import autenticacion_bp
 from app.blueprints.dashboard.rutas import dashboard_bp
 from app.blueprints.usuario.rutas import usuario_bp
+from app.blueprints.venta.rutas import ventas_bp
 
 def create_app():
     app = Flask(__name__)
@@ -11,5 +12,6 @@ def create_app():
     app.register_blueprint(autenticacion_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(usuario_bp)
+    app.register_blueprint(ventas_bp)
     
     return app
