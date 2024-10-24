@@ -45,7 +45,6 @@ def editar_usuario(id_usuario):
         email = request.form['email']
         rol = request.form['rol']
 
-        # Crear un diccionario para el usuario actualizado
         usuario_actualizado = {
             "id": id_usuario,
             "usuario": usuario,
@@ -55,7 +54,7 @@ def editar_usuario(id_usuario):
         }
 
         try:
-            if UsuarioService.actualizar_usuario(usuario_actualizado):  # Método para actualizar usuario
+            if UsuarioService.actualizar_usuario(usuario_actualizado): 
                 flash("Usuario actualizado exitosamente.", "success")
                 return redirect(url_for('usuario.ver_usuarios')) 
             else:

@@ -64,4 +64,9 @@ def eliminar_venta(id_venta):
 @ventas_bp.route('/ver_ventas', methods=['GET'])
 def ver_ventas():
     ventas = VentasService.obtener_ventas()  
-    return render_template('venta/ver_venta.html', ventas=ventas) 
+    return render_template('venta/ver_ventas.html', ventas=ventas) 
+
+@ventas_bp.route('/detalles_venta', methods=['GET'])
+def detalles_venta():
+    ventas = VentasService.obtener_ventas()  
+    return render_template('venta/detalles_venta.html', ventas=ventas) 

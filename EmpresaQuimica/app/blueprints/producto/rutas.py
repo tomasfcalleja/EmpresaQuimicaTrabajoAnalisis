@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from app.services.productos_service import ProductoService  
 
 producto_bp = Blueprint('producto', __name__)
@@ -85,6 +85,6 @@ def eliminar_producto(id_producto):
 @producto_bp.route('/ver_productos', methods=['GET'])
 def ver_productos():
     print("Hola", flush=True)
-    productos = ProductoService.obtener_productos()  
-    print(productos)
+    productos = ProductoService.obtener_productos()
     return render_template('producto/ver_productos.html', productos=productos)
+    #return jsonify({"productos":productos}), 200
