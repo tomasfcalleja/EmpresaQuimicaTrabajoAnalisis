@@ -3,116 +3,68 @@
 {% block title %}Inicio - Tienda de Productos{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Bienvenido a Nuestra Tienda</h2>
-        <div class="row">
-            <!-- Esto se reemplaza por los productos que vengan desde JSONBIn-->
-
-
-            <!-- Producto 1 -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <img src="ruta/a/imagen_producto_1.jpg" class="card-img-top" alt="Producto 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 1</h5>
-                        <p class="card-text">Descripción breve del producto 1.</p>
-                        <label for="cantidadProducto1">Cantidad:</label>
-                        <select class="form-control" id="cantidadProducto1">
-                            <option value="0">Seleccionar cantidad</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <img src="ruta/a/imagen_producto_2.jpg" class="card-img-top" alt="Producto 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 2</h5>
-                        <p class="card-text">Descripción breve del producto 2.</p>
-                        <label for="cantidadProducto2">Cantidad:</label>
-                        <select class="form-control" id="cantidadProducto2">
-                            <option value="0">Seleccionar cantidad</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <img src="ruta/a/imagen_producto_3.jpg" class="card-img-top" alt="Producto 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 3</h5>
-                        <p class="card-text">Descripción breve del producto 3.</p>
-                        <label for="cantidadProducto3">Cantidad:</label>
-                        <select class="form-control" id="cantidadProducto3">
-                            <option value="0">Seleccionar cantidad</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-                    <img src="ruta/a/imagen_producto_4.jpg" class="card-img-top" alt="Producto 4">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 4</h5>
-                        <p class="card-text">Descripción breve del producto 4.</p>
-                        <label for="cantidadProducto4">Cantidad:</label>
-                        <select class="form-control" id="cantidadProducto4">
-                            <option value="0">Seleccionar cantidad</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-        <div class="text-center">
-            <button class="btn btn-primary" id="btnAgregarCarrito">Agregar al Carrito</button>
-        </div>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Bienvenido a Nuestra Tienda</h2>
+        <div class="d-flex justify-content-end mb-3">
+        <a href="{{ url_for('inicio.ver_carrito') }}" class="btn btn-success" id="btnVerCarrito">Ver Carrito</a>
     </div>
 
-    <script>
-        document.getElementById('btnAgregarCarrito').addEventListener('click', function() {
-            const selectedProducts = [];
+    <div class="row">
+        {% for producto in productos %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{ producto.imagen if producto.imagen else 'ruta/a/imagen_default.jpg' }}" 
+                     class="card-img-top" 
+                     alt="{{ producto.nombre }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text">{{ producto.descripcion }}</p>
+                    <p class="card-text">Precio: ${{ producto.precio }}</p>
+                    <label for="cantidadProducto{{ producto.id }}">Cantidad:</label>
+                    <select class="form-control" id="cantidadProducto{{ producto.id }}">
+                        <option value="0">Seleccionar cantidad</option>
+                        {% for i in range(1, 6) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
-            for (let i = 1; i <= 4; i++) { // Asumiendo que tienes 4 productos
-                const cantidad = document.getElementById(`cantidadProducto${i}`).value;
-                if (cantidad > 0) {
-                    selectedProducts.push(`Producto ${i}: ${cantidad}`);
-                }
-            }
+    <div class="text-center">
+        <button class="btn btn-primary mb-2" id="btnAgregarCarrito">Agregar al Carrito</button>
+    </div>
+</div>
 
-            if (selectedProducts.length > 0) {
-                alert(`Productos seleccionados:\n${selectedProducts.join('\n')}`);
-                // Aquí puedes agregar la lógica para agregar al carrito
-            } else {
-                alert('Por favor, selecciona al menos un producto.');
+<script>
+    document.getElementById('btnAgregarCarrito').addEventListener('click', function() {
+        const selectedProducts = [];
+
+        const productos = JSON.parse('{{ productos | tojson | safe }}');
+        
+        productos.forEach(producto => {
+            const cantidad = document.getElementById('cantidadProducto' + producto.id).value;
+            if (cantidad > 0) {
+                const precioTotal = producto.precio * cantidad;
+                selectedProducts.push({
+                    nombre: producto.nombre,
+                    cantidad: cantidad,
+                    id: producto.id,
+                    precioUnitario: producto.precio,
+                    precioTotal: precioTotal 
+                });
             }
         });
-    </script>
+
+        if (selectedProducts.length > 0) {
+            localStorage.setItem('carrito', JSON.stringify(selectedProducts));
+            alert('Productos agregados al carrito.');
+        } else {
+            alert('Por favor, selecciona al menos un producto.');
+        }
+    });
+</script>
+
 {% endblock %}
