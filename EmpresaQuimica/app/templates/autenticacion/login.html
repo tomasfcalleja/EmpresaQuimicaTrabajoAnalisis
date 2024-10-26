@@ -6,17 +6,29 @@
     <h2 class="text-center">Iniciar Sesión</h2>
     <form method="POST" class="mx-auto mt-4" style="max-width: 400px;">
         <div class="form-group">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuarioIngresado" name="usuarioIngresado" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasenaIngresada" name="contrasenaIngresada" class="form-control" required>
         </div>
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            <a href="{{ url_for('autenticacion.registro') }}" class="btn btn-secondary">Registrarse</a>
         </div>
     </form>
+
+    <div class="text-center mt-3">
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-danger mt-3">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
 {% endblock %}
