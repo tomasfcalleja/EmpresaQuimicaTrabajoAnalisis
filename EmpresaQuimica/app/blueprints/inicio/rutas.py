@@ -5,6 +5,11 @@ import uuid  # Para generar IDs únicos
 
 inicio_bp = Blueprint('inicio', __name__)
 
+@inicio_bp.route('/')
+def index():
+    productos = ProductoService.obtener_productos()  
+    return render_template('inicio/inicio.html', productos=productos)
+
 @inicio_bp.route('/inicio')
 def inicio():
     productos = ProductoService.obtener_productos()  

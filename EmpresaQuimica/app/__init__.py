@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect, url_for
 from app.blueprints.autenticacion.rutas import autenticacion_bp
 from app.blueprints.dashboard.rutas import dashboard_bp
 from app.blueprints.usuario.rutas import usuario_bp
@@ -8,6 +8,7 @@ from app.blueprints.venta.rutas import ventas_bp
 
 def create_app():
     app = Flask(__name__)
+
     
     app.config['SECRET_KEY'] = '$2a$10$l3Zw/L9LWrrPSNpWfQCTCODDGB2PsYk3/D.GYyqtAfRrh.WZKmP.W'
 
