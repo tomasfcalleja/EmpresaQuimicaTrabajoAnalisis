@@ -24,12 +24,9 @@
             <tr>
                 <td>{{ venta.id }}</td>
                 <td>{{ venta.idUsuario }}</td>
-                <td>{{ venta.fecha }}</td> <!-- Nueva columna de fecha -->
+                <td>{{ venta.fecha }}</td>
                 <td>
-                    <a href="{{ url_for('venta.editar_venta', id_venta=venta.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                    <form action="{{ url_for('venta.eliminar_venta', id_venta=venta.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</button>
-                    </form>
+                     <a href="{{ url_for('venta.detalles_venta', id_venta=venta.id) }}" class="btn btn-sm btn-info">Ver detalles</a> 
                 </td>
             </tr>
             {% endfor %}
