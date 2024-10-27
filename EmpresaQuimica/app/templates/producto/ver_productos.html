@@ -32,7 +32,7 @@
                 <td>{{ producto.descripcion }}</td>
                 <td>{{ producto.nivel }}</td>
                 <td>{{ producto.stock }}</td>
-                <td>{{ producto.imagen }}</td> <!-- Mostrar la ruta de la imagen en lugar de la imagen en sí -->
+                <td>{{ producto.imagen }}</td> 
                 <td>
                     <a href="{{ url_for('producto.editar_producto', id_producto=producto.id) }}" class="btn btn-sm btn-warning">Editar</a>
                     <form action="{{ url_for('producto.eliminar_producto', id_producto=producto.id) }}" method="POST" style="display:inline;">

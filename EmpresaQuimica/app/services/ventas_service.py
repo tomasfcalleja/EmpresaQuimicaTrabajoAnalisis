@@ -83,7 +83,6 @@ class VentasService:
             print(f"Error al eliminar la venta: {e}")
             return False
 
-    # Nuevos métodos para la gestión de venta_detalle
     @staticmethod
     def agregar_detalle_venta(nuevo_detalle):
         try:
@@ -127,24 +126,19 @@ class VentasService:
     def obtener_estadisticas():
         ventas = VentasService.obtener_ventas()
 
-        # Total de ventas
         total_ventas = len(ventas)
 
-        # Ventas por mes (agrupamos las fechas)
         ventas_por_mes = defaultdict(int)
         for venta in ventas:
             fecha = datetime.strptime(venta['fecha'], "%d/%m/%Y")
-            mes = fecha.strftime("%Y-%m")  # Agrupamos por año-mes
+            mes = fecha.strftime("%Y-%m")  
             ventas_por_mes[mes] += 1
 
-        # Ordenamos las ventas por mes para mostrarlas en orden
         meses = sorted(ventas_por_mes.keys())
         ventas_por_mes_values = [ventas_por_mes[mes] for mes in meses]
 
-        # Promedio de ventas por mes
         promedio_ventas = total_ventas / len(ventas_por_mes) if ventas_por_mes else 0
 
-        # Usuario con más ventas
         ventas_por_usuario = defaultdict(int)
         for venta in ventas:
             id_usuario = venta['idUsuario']
@@ -153,10 +147,8 @@ class VentasService:
         usuarios = list(ventas_por_usuario.keys())
         ventas_por_usuario_values = list(ventas_por_usuario.values())
 
-        # Última venta
         ultima_venta = max(ventas, key=lambda v: datetime.strptime(v['fecha'], "%d/%m/%Y"))['fecha'] if ventas else None
 
-        # Devolvemos los datos necesarios para las estadísticas
         return {
             'total_ventas': total_ventas,
             'promedio_ventas': promedio_ventas,

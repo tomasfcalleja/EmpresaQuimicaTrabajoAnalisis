@@ -28,12 +28,10 @@
                     {% endif %}
                     
                     {% if session.get('usuario') %}
-                        <!-- Si hay un usuario logueado, mostrar la opción para cerrar sesión -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('autenticacion.logout') }}">Cerrar Sesión</a>
                         </li>
                     {% else %}
-                        <!-- Si no hay usuario logueado, mostrar la opción para iniciar sesión -->
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('autenticacion.login') }}">Iniciar Sesion</a>
                         </li>
@@ -44,7 +42,6 @@
         </nav>
     </header>
     
-    <!-- Bloque para mostrar mensajes flash -->
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div class="container mt-3">

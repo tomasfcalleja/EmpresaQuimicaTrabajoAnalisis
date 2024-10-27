@@ -7,7 +7,7 @@ ventas_bp = Blueprint('venta', __name__)
 @ventas_bp.route('/agregar_venta', methods=['GET', 'POST'])
 def agregar_venta():
     if request.method == 'POST':
-        id = str(uuid.uuid4())  # Generar un ID único
+        id = str(uuid.uuid4())  
         id_usuario = request.form['idUsuario'] 
 
         nueva_venta = {
@@ -31,13 +31,13 @@ def editar_venta(id_venta):
     venta_a_editar = VentasService.obtener_venta_por_id(id_venta)  
 
     if request.method == 'POST':
-        id = venta_a_editar['id']  # Usar el ID existente
+        id = venta_a_editar['id']  
         id_usuario = request.form['idUsuario']
 
         venta_actualizada = {
             "id": id,
             "idUsuario": id_usuario,
-            "fecha": venta_a_editar['fecha']  # Mantener la fecha original
+            "fecha": venta_a_editar['fecha'] 
         }
 
         try:
@@ -70,25 +70,17 @@ def ver_ventas():
 
 @ventas_bp.route('/detalles_venta', methods=['GET'])
 def detalles_venta():
-    id_venta = request.args.get('id_venta')  # Obtiene el ID de la venta desde el parámetro de consulta
-    venta_detalle = VentasService.obtener_detalles_venta_por_id_venta(id_venta)  # Llama al método para obtener el detalle de la venta
+    id_venta = request.args.get('id_venta') 
+    venta_detalle = VentasService.obtener_detalles_venta_por_id_venta(id_venta)  
     
-    # Si `venta_detalle` está vacío, pasar `None` para que la plantilla muestre el mensaje
     if not venta_detalle:
         venta_detalle = None
 
     return render_template('venta/detalles_venta.html', venta_detalle=venta_detalle)
 
-
-
-# @ventas_bp.route('/detalles_venta', methods=['GET'])
-# def detalles_venta():
-#     ventas = VentasService.obtener_ventas()  
-#     return render_template('venta/detalles_venta.html', ventas=ventas)
-
 @ventas_bp.route('/ver_estadisticas', methods=['GET'])
 def ver_estadisticas():
-    estadisticas = VentasService.obtener_estadisticas()  # Obtenemos las estadísticas
+    estadisticas = VentasService.obtener_estadisticas()
 
     return render_template('venta/ver_estadisticas.html',
                            total_ventas=estadisticas['total_ventas'],

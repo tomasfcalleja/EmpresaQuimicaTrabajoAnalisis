@@ -51,22 +51,19 @@ class ProductoService:
 
     @staticmethod
     def reducir_stock(producto_id, cantidad):
-        # Asegúrate de que cantidad sea un entero
         try:
-            cantidad = int(cantidad)  # Convierte cantidad a entero
+            cantidad = int(cantidad)  
         except ValueError:
-            return False  # Retorna False si la conversión falla
+            return False  
 
-        # Lógica para reducir el stock en JSONBin
-        producto = ProductoService.obtener_producto_por_id(producto_id)  # Obtener el producto por su ID
+        producto = ProductoService.obtener_producto_por_id(producto_id) 
         if producto:
             nuevo_stock = producto['stock'] - cantidad
             if nuevo_stock < 0:
-                return False  # No se puede reducir más allá de 0
+                return False 
 
-            # Actualizar el producto en JSONBin
             producto['stock'] = nuevo_stock
-            ProductoService.actualizar_producto(producto)  # Implementa esta función para actualizar el producto
+            ProductoService.actualizar_producto(producto)  
             
             return True
         return False

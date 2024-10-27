@@ -11,7 +11,6 @@
         <a class="btn btn-danger mb-2 mr-2" id="btnVaciarCarrito">Vaciar Carrito</a>
     </div>
 
-    <!-- Botón para proceder al pago que envía el carrito al servidor -->
     <div class="text-center mt-4">
         <a id="btnProcederPago" class="btn btn-primary mb-2 mr-2">Proceder al Pago</a>
     </div>
@@ -71,7 +70,6 @@
             }
         });
 
-        // Proceder al pago: enviar carrito al servidor y redirigir
         document.getElementById('btnProcederPago').addEventListener('click', function() {
             if (carrito && carrito.length > 0) {
                 fetch("{{ url_for('inicio.actualizar_carrito') }}", {

@@ -22,7 +22,6 @@
 
     <h4 class="text-center">Total a Pagar: ${{ total }}</h4>
 
-    <!-- Formulario de Pago -->
     <div class="mt-4">
         <h2 class="text-center mb-4">Formulario de Pago</h2>
         <form id="formularioPago" method="POST" action="{{ url_for('inicio.procesar_pago') }}">
@@ -54,7 +53,7 @@
 
 <script>
     document.getElementById('formularioPago').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita el envío del formulario para manejarlo con AJAX
+        event.preventDefault(); 
 
         const formData = new FormData(this);
         
@@ -65,7 +64,6 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Si el pago fue exitoso, vaciar el carrito de localStorage
                 localStorage.removeItem('carrito'); // Vaciar el carrito
                 alert('Pago procesado con éxito');
                 window.location.href = '/inicio'; // Redirigir al inicio o donde desees
