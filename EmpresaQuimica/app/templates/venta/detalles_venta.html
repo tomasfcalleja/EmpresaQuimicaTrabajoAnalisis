@@ -19,14 +19,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for detalle in venta_detalle %}
                 <tr>
-                    <td>{{ venta_detalle.id }}</td>
-                    <td>{{ venta_detalle.idVenta }}</td>
-                    <td>{{ venta_detalle.idProducto }}</td>
-                    <td>{{ venta_detalle.cantidad }}</td>
-                    <td>{{ venta_detalle.precio }}</td>
-                    <td>{{ venta_detalle.subtotal }}</td>
+                    <td>{{ detalle.id }}</td>
+                    <td>{{ detalle.idVenta }}</td>
+                    <td>{{ detalle.idProducto }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                    <td>{{ detalle.precio }}</td>
+                    <td>{{ detalle.subtotal }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     {% else %}

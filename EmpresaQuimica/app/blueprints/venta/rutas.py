@@ -71,7 +71,7 @@ def ver_ventas():
 @ventas_bp.route('/detalles_venta', methods=['GET'])
 def detalles_venta():
     id_venta = request.args.get('id_venta')  # Obtiene el ID de la venta desde el parámetro de consulta
-    venta_detalle = VentasService.obtener_venta_por_id(id_venta)  # Llama al método para obtener el detalle de la venta
+    venta_detalle = VentasService.obtener_detalles_venta_por_id_venta(id_venta)  # Llama al método para obtener el detalle de la venta
     
     # Si `venta_detalle` está vacío, pasar `None` para que la plantilla muestre el mensaje
     if not venta_detalle:
@@ -81,10 +81,10 @@ def detalles_venta():
 
 
 
-@ventas_bp.route('/detalles_venta', methods=['GET'])
-def detalles_venta():
-    ventas = VentasService.obtener_ventas()  
-    return render_template('venta/detalles_venta.html', ventas=ventas)
+# @ventas_bp.route('/detalles_venta', methods=['GET'])
+# def detalles_venta():
+#     ventas = VentasService.obtener_ventas()  
+#     return render_template('venta/detalles_venta.html', ventas=ventas)
 
 @ventas_bp.route('/ver_estadisticas', methods=['GET'])
 def ver_estadisticas():
