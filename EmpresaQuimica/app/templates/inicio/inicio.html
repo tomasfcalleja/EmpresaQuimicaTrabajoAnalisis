@@ -5,8 +5,14 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="text-center mb-4">Bienvenido a Nuestra Tienda</h2>
-        <div class="d-flex justify-content-end mb-3">
-        <a href="{{ url_for('inicio.ver_carrito') }}" class="btn btn-success" id="btnVerCarrito">Ver Carrito</a>
+
+    <div class="d-flex justify-content-end mb-3">
+        <!-- Botón de Ver Carrito con badge para mostrar la cantidad de productos -->
+        <a href="{{ url_for('inicio.ver_carrito') }}" class="btn btn-success position-relative" id="btnVerCarrito">
+            Ver Carrito
+            <!-- Badge para la cantidad de productos en el carrito -->
+            <span class="badge badge-danger position-absolute top-0 start-100 translate-middle" id="carritoCantidad" style="display: none;">0</span>
+        </a>
     </div>
 
     <div class="row">
@@ -39,31 +45,56 @@
 </div>
 
 <script>
-    document.getElementById('btnAgregarCarrito').addEventListener('click', function() {
-        const selectedProducts = [];
+    document.addEventListener('DOMContentLoaded', function() {
+        // Función para actualizar el badge de la cantidad de productos en el carrito
+        function actualizarBadgeCarrito() {
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const carritoCantidad = document.getElementById('carritoCantidad');
+            
+            if (carrito.length > 0) {
+                carritoCantidad.innerText = carrito.length;
+                carritoCantidad.style.display = 'inline'; // Mostrar badge si hay productos
+            } else {
+                carritoCantidad.style.display = 'none'; // Ocultar badge si el carrito está vacío
+            }
+        }
 
-        const productos = JSON.parse('{{ productos | tojson | safe }}');
-        
-        productos.forEach(producto => {
-            const cantidad = document.getElementById('cantidadProducto' + producto.id).value;
-            if (cantidad > 0) {
-                const precioTotal = producto.precio * cantidad;
-                selectedProducts.push({
-                    nombre: producto.nombre,
-                    cantidad: cantidad,
-                    id: producto.id,
-                    precioUnitario: producto.precio,
-                    precioTotal: precioTotal 
-                });
+        // Llamar a la función al cargar la página
+        actualizarBadgeCarrito();
+
+        // Agregar productos al carrito al hacer clic en "Agregar al Carrito"
+        document.getElementById('btnAgregarCarrito').addEventListener('click', function() {
+            const productosSeleccionados = [];
+
+            const productos = JSON.parse('{{ productos | tojson | safe }}');
+            
+            productos.forEach(producto => {
+                const cantidad = document.getElementById('cantidadProducto' + producto.id).value;
+                if (cantidad > 0) {
+                    const precioTotal = producto.precio * cantidad;
+                    productosSeleccionados.push({
+                        nombre: producto.nombre,
+                        cantidad: parseInt(cantidad),  // Asegurarse de que sea un número
+                        id: producto.id,
+                        precioUnitario: producto.precio,
+                        precioTotal: precioTotal 
+                    });
+                }
+            });
+
+            if (productosSeleccionados.length > 0) {  // Corregido aquí
+                const carritoActual = JSON.parse(localStorage.getItem('carrito')) || [];
+                const carritoActualizado = carritoActual.concat(productosSeleccionados);
+
+                localStorage.setItem('carrito', JSON.stringify(carritoActualizado));
+                alert('Productos agregados al carrito.');
+                
+                // Actualizar el badge del carrito al agregar productos
+                actualizarBadgeCarrito();
+            } else {
+                alert('Por favor, selecciona al menos un producto.');
             }
         });
-
-        if (selectedProducts.length > 0) {
-            localStorage.setItem('carrito', JSON.stringify(selectedProducts));
-            alert('Productos agregados al carrito.');
-        } else {
-            alert('Por favor, selecciona al menos un producto.');
-        }
     });
 </script>
 

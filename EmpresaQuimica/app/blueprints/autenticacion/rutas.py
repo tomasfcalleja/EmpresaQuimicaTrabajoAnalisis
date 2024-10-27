@@ -30,3 +30,5 @@ def logout():
     session.pop('rol', None)
     flash('Has cerrado sesión exitosamente.')
     return redirect(url_for('inicio.inicio'))
+
+

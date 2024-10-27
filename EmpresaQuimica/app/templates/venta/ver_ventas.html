@@ -7,7 +7,6 @@
     <h2 class="text-center mb-4">Lista de Ventas</h2>
 
     <div class="text-right mb-3">
-                            
         <a href="{{ url_for('venta.agregar_venta') }}" class="btn btn-primary">Agregar Venta</a>
     </div>
 
@@ -16,6 +15,7 @@
             <tr>
                 <th>ID</th>
                 <th>ID Usuario</th>
+                <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,8 +24,8 @@
             <tr>
                 <td>{{ venta.id }}</td>
                 <td>{{ venta.idUsuario }}</td>
+                <td>{{ venta.fecha }}</td> <!-- Nueva columna de fecha -->
                 <td>
-                    <!-- <a href="{{ url_for('venta.detalles_venta', id_venta=venta.id) }}" class="btn btn-sm btn-info">Ver detalles</a> -->
                     <a href="{{ url_for('venta.editar_venta', id_venta=venta.id) }}" class="btn btn-sm btn-warning">Editar</a>
                     <form action="{{ url_for('venta.eliminar_venta', id_venta=venta.id) }}" method="POST" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">Eliminar</button>
