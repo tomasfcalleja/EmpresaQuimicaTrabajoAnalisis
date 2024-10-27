@@ -1,12 +1,13 @@
-
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.services.ventas_service import VentasService
+import uuid
+
 ventas_bp = Blueprint('venta', __name__)
 
 @ventas_bp.route('/agregar_venta', methods=['GET', 'POST'])
 def agregar_venta():
     if request.method == 'POST':
-        id = request.form['id']
+        id = str(uuid.uuid4())  # Generar un ID único
         id_usuario = request.form['idUsuario'] 
 
         nueva_venta = {
@@ -30,12 +31,13 @@ def editar_venta(id_venta):
     venta_a_editar = VentasService.obtener_venta_por_id(id_venta)  
 
     if request.method == 'POST':
-        id= request.form['id']
+        id = venta_a_editar['id']  # Usar el ID existente
         id_usuario = request.form['idUsuario']
 
         venta_actualizada = {
             "id": id,
-            "idUsuario": id_usuario
+            "idUsuario": id_usuario,
+            "fecha": venta_a_editar['fecha']  # Mantener la fecha original
         }
 
         try:
@@ -69,4 +71,17 @@ def ver_ventas():
 @ventas_bp.route('/detalles_venta', methods=['GET'])
 def detalles_venta():
     ventas = VentasService.obtener_ventas()  
-    return render_template('venta/detalles_venta.html', ventas=ventas) 
+    return render_template('venta/detalles_venta.html', ventas=ventas)
+
+@ventas_bp.route('/ver_estadisticas', methods=['GET'])
+def ver_estadisticas():
+    estadisticas = VentasService.obtener_estadisticas()  # Obtenemos las estadísticas
+
+    return render_template('venta/ver_estadisticas.html',
+                           total_ventas=estadisticas['total_ventas'],
+                           promedio_ventas=estadisticas['promedio_ventas'],
+                           ultima_venta=estadisticas['ultima_venta'],
+                           meses=estadisticas['meses'],
+                           ventas_por_mes=estadisticas['ventas_por_mes'],
+                           usuarios=estadisticas['usuarios'],
+                           ventas_por_usuario=estadisticas['ventas_por_usuario'])

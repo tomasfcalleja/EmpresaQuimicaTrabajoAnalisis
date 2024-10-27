@@ -11,8 +11,9 @@
         <a class="btn btn-danger mb-2 mr-2" id="btnVaciarCarrito">Vaciar Carrito</a>
     </div>
 
+    <!-- Botón para proceder al pago que envía el carrito al servidor -->
     <div class="text-center mt-4">
-        <a href="{{ url_for('inicio.realizar_pago') }}" class="btn btn-primary mb-2 mr-2">Proceder al Pago</a>
+        <a id="btnProcederPago" class="btn btn-primary mb-2 mr-2">Proceder al Pago</a>
     </div>
 </div>
 
@@ -67,6 +68,29 @@
                 localStorage.removeItem('carrito');
                 alert('Carrito vaciado.');
                 location.reload(); 
+            }
+        });
+
+        // Proceder al pago: enviar carrito al servidor y redirigir
+        document.getElementById('btnProcederPago').addEventListener('click', function() {
+            if (carrito && carrito.length > 0) {
+                fetch("{{ url_for('inicio.actualizar_carrito') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(carrito),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = "{{ url_for('inicio.realizar_pago') }}";
+                    } else {
+                        alert('Error al proceder al pago.');
+                    }
+                });
+            } else {
+                alert('El carrito está vacío.');
             }
         });
     });
