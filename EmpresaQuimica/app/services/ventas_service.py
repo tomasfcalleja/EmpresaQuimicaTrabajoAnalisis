@@ -1,8 +1,9 @@
-from config import JSONBIN_URL_VENTA, HEADERS  
+from config import JSONBIN_URL_VENTA, JSONBIN_URL_VENTA_DETALLE, HEADERS  
 import requests
 import json
 
 class VentasService:
+    
     
     @staticmethod
     def obtener_ventas():
@@ -12,7 +13,19 @@ class VentasService:
             return ventas
         except requests.exceptions.RequestException as e:
             print(f"Error al obtener ventas: {e}")
-            return []
+            return [] 
+
+       
+    @staticmethod
+    def obtener_ventas_detalle():
+        try:
+            response = requests.get(JSONBIN_URL_VENTA_DETALLE, headers=HEADERS)
+            ventas_detalle = response.json().get('record', [])
+            return ventas_detalle
+        except requests.exceptions.RequestException as e:
+            print(f"Error al obtener ventas: {e}")
+            return []  
+        
 
     @staticmethod
     def agregar_venta(nueva_venta):
@@ -65,3 +78,14 @@ class VentasService:
         except requests.exceptions.RequestException as e:
             print(f"Error al eliminar la venta: {e}")
             return False
+
+        
+    @staticmethod
+    def obtener_venta_detalle_por_id(id_venta):
+        try:
+            ventas_detalle = VentasService.obtener_ventas_detalle()
+            print(f"Buscando venta con ID: {id_venta}")
+            return next((venta_detalle for venta_detalle in ventas_detalle if venta_detalle['idVenta'] == id_venta), None)
+        except Exception as e:
+            print(f"Error al obtener la venta por ID: {e}")
+            return None    
