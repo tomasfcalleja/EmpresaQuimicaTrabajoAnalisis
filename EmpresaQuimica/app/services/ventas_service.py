@@ -1,4 +1,4 @@
-from config import JSONBIN_URL_VENTA, JSONBIN_URL_VENTA_DETALLE, HEADERS  
+from config import JSONBIN_URL_VENTA, JSONBIN_URL_VENTA_DETALLE, JSONBIN_URL_USUARIOS,JSONBIN_URL_PRODUCTOS, HEADERS  
 import requests
 import json
 from datetime import datetime
@@ -6,7 +6,6 @@ from collections import defaultdict
 
 class VentasService:
     
-    # Métodos existentes para la gestión de ventas
     @staticmethod
     def obtener_ventas():
         try:
@@ -15,7 +14,18 @@ class VentasService:
             return ventas
         except requests.exceptions.RequestException as e:
             print(f"Error al obtener ventas: {e}")
-            return [] 
+            return []
+
+    # Este metodo lo tenemos creado en usaurios_service, pero por miedo a tocarlo lo cree aca devuelta, por las dudas de pisarnos el codigo
+    @staticmethod
+    def obtener_usuarios():
+        try:
+            response = requests.get(JSONBIN_URL_USUARIOS, headers=HEADERS)  
+            usuarios = response.json().get('record', [])
+            return usuarios
+        except requests.exceptions.RequestException as e:
+            print(f"Error al obtener usuarios: {e}")
+            return []     
 
        
     @staticmethod
@@ -27,24 +37,6 @@ class VentasService:
         except requests.exceptions.RequestException as e:
             print(f"Error al obtener ventas: {e}")
             return []  
-        
-
-    @staticmethod
-    def agregar_venta(nueva_venta):
-        try:
-            response = requests.get(JSONBIN_URL_VENTA, headers=HEADERS)
-            ventas = response.json().get('record', [])
-
-            # Agregar fecha actual
-            nueva_venta['fecha'] = datetime.now().strftime("%d/%m/%Y")  
-            ventas.append(nueva_venta)
-
-            update_response = requests.put(JSONBIN_URL_VENTA, json=ventas, headers=HEADERS)
-
-            return update_response.status_code == 200
-        except requests.exceptions.RequestException as e:
-            print(f"Error al agregar venta: {e}")
-            return False
 
     @staticmethod
     def obtener_venta_por_id(id_venta):
@@ -97,15 +89,38 @@ class VentasService:
             print(f"Error al agregar detalle de venta: {e}")
             return False
 
+    # @staticmethod
+    # def obtener_detalles_venta_por_id_venta(id_venta):
+    #     try:
+    #         response = requests.get(JSONBIN_URL_VENTA_DETALLE, headers=HEADERS)
+    #         detalles_venta = response.json().get('record', [])
+    #         return [detalle for detalle in detalles_venta if detalle['idVenta'] == id_venta]
+    #     except requests.exceptions.RequestException as e:
+    #         print(f"Error al obtener detalles de venta: {e}")
+    #         return []
+
     @staticmethod
     def obtener_detalles_venta_por_id_venta(id_venta):
         try:
-            response = requests.get(JSONBIN_URL_VENTA_DETALLE, headers=HEADERS)
-            detalles_venta = response.json().get('record', [])
-            return [detalle for detalle in detalles_venta if detalle['idVenta'] == id_venta]
+            response_detalle = requests.get(JSONBIN_URL_VENTA_DETALLE, headers=HEADERS)
+            detalles_venta = response_detalle.json().get('record', [])
+    
+            response_productos = requests.get(JSONBIN_URL_PRODUCTOS, headers=HEADERS)
+            productos = response_productos.json().get('record', [])
+
+            productos_dict = {producto['id']: producto['nombre'] for producto in productos}
+        
+            return [
+            {
+                **detalle,
+                'nombre_producto': productos_dict.get(detalle['idProducto'], 'Desconocido')
+            }
+            for detalle in detalles_venta if detalle['idVenta'] == id_venta
+        ]
         except requests.exceptions.RequestException as e:
             print(f"Error al obtener detalles de venta: {e}")
             return []
+
 
     @staticmethod
     def eliminar_detalles_venta_por_id_venta(id_venta):

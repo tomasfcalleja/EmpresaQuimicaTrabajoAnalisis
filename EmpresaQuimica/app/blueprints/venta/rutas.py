@@ -63,14 +63,28 @@ def eliminar_venta(id_venta):
 
     return redirect(url_for('venta.ver_ventas'))
 
+# @ventas_bp.route('/ver_ventas', methods=['GET'])
+# def ver_ventas():
+#     ventas = VentasService.obtener_ventas()  
+#     return render_template('venta/ver_ventas.html', ventas=ventas) 
+
 @ventas_bp.route('/ver_ventas', methods=['GET'])
 def ver_ventas():
     ventas = VentasService.obtener_ventas()  
-    return render_template('venta/ver_ventas.html', ventas=ventas) 
+    usuarios = VentasService.obtener_usuarios()  
+
+   
+    usuarios_dict = {usuario['id']: usuario['usuario'] for usuario in usuarios}
+
+    for venta in ventas:
+        venta['nombreUsuario'] = usuarios_dict.get(venta['idUsuario'], "Usuario desconocido")
+
+    return render_template('venta/ver_ventas.html', ventas=ventas)
+
 
 @ventas_bp.route('/detalles_venta', methods=['GET'])
 def detalles_venta():
-    id_venta = request.args.get('id_venta') 
+    id_venta = request.args.get('id_venta')
     venta_detalle = VentasService.obtener_detalles_venta_por_id_venta(id_venta)  
     
     if not venta_detalle:
