@@ -45,7 +45,14 @@
             </div>
 
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-success">Realizar Pago</button>
+                <button id="pagoBtn" type="submit" class="btn btn-success">Realizar Pago</button>
+            </div>
+
+            <!-- Loader (spinner) -->
+            <div id="loader" class="text-center mt-3" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Procesando pago...</span>
+                </div>
             </div>
         </form>
     </div>
@@ -53,15 +60,24 @@
 
 <script>
     document.getElementById('formularioPago').addEventListener('submit', function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
+
+        // Mostrar loader y deshabilitar botón
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('pagoBtn').disabled = true;
 
         const formData = new FormData(this);
-        
+
         fetch('{{ url_for("inicio.procesar_pago") }}', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => { throw new Error(data.message); });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 localStorage.removeItem('carrito'); // Vaciar el carrito
@@ -71,7 +87,15 @@
                 alert('Hubo un problema al procesar el pago.');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            alert('Error: ' + error.message);
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            // Ocultar loader y habilitar botón después del proceso
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('pagoBtn').disabled = false;
+        });
     });
 </script>
 

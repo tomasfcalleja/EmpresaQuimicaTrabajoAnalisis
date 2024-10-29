@@ -27,7 +27,23 @@ class VentasService:
             print(f"Error al obtener usuarios: {e}")
             return []     
 
-       
+    @staticmethod
+    def agregar_venta(nueva_venta):
+        try:
+            response = requests.get(JSONBIN_URL_VENTA, headers=HEADERS)
+            ventas = response.json().get('record', [])
+
+            # Agregar fecha actual
+            nueva_venta['fecha'] = datetime.now().strftime("%d/%m/%Y")  
+            ventas.append(nueva_venta)
+
+            update_response = requests.put(JSONBIN_URL_VENTA, json=ventas, headers=HEADERS)
+
+            return update_response.status_code == 200
+        except requests.exceptions.RequestException as e:
+            print(f"Error al agregar venta: {e}")
+            return False
+           
     @staticmethod
     def obtener_ventas_detalle():
         try:

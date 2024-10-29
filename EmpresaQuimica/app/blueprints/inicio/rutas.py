@@ -30,25 +30,21 @@ def realizar_pago():
 
     return render_template('inicio/realizar_pago.html', carrito=carrito, total=total)
 
-@inicio_bp.route('/procesar-pago', methods=['POST'])
+@inicio_bp.route('/procesar_pago', methods=['POST']) 
 def procesar_pago():
     if 'usuario' not in session:
-        flash('Debes iniciar sesión para realizar el pago.', 'warning')
-        return redirect(url_for('autenticacion.login'))
+        return jsonify({'success': False, 'message': 'Debes iniciar sesión para realizar el pago.'}), 401
 
     nombre_tarjeta = request.form.get('nombreTarjeta')
     numero_tarjeta = request.form.get('numeroTarjeta')
     fecha_expiracion = request.form.get('fechaExpiracion')
     cvv = request.form.get('cvv')
 
-    flash('Pago realizado con éxito.', 'success')
-
     carrito = session.get('carrito', [])
-    usuario_id = session['usuario']['id']  
+    usuario_id = session.get('usuario', {}).get('id')  
 
     if not carrito:
-        flash('El carrito está vacío.', 'warning')
-        return redirect(url_for('inicio.ver_carrito'))
+        return jsonify({'success': False, 'message': 'El carrito está vacío.'}), 400
 
     venta_id = str(uuid.uuid4())
 
@@ -60,8 +56,7 @@ def procesar_pago():
     venta_agregada = VentasService.agregar_venta(nueva_venta)
     
     if not venta_agregada:
-        flash('Hubo un error al registrar la venta.', 'danger')
-        return redirect(url_for('inicio.ver_carrito'))
+        return jsonify({'success': False, 'message': 'Hubo un error al registrar la venta.'}), 500
 
     for item in carrito:
         detalle_venta = {
@@ -76,16 +71,15 @@ def procesar_pago():
         detalle_agregado = VentasService.agregar_detalle_venta(detalle_venta)
         
         if not detalle_agregado:
-            flash(f'Error al registrar el detalle de venta para el producto {item["nombre"]}.', 'danger')
+            return jsonify({'success': False, 'message': f'Error al registrar el detalle de venta para el producto {item["nombre"]}.'}), 500
         
         stock_reducido = ProductoService.reducir_stock(item['id'], item['cantidad'])
         if not stock_reducido:
-            flash(f'Error al reducir el stock del producto {item["nombre"]}.', 'danger')
+            return jsonify({'success': False, 'message': f'Error al reducir el stock del producto {item["nombre"]}.'}), 500
 
     session.pop('carrito', None)
-    flash('El carrito ha sido vaciado.', 'info')  
-
     return jsonify({'success': True})
+
 
 @inicio_bp.route('/actualizar_carrito', methods=['POST'])
 def actualizar_carrito():
